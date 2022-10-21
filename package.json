@@ -1,0 +1,26 @@
+{
+  "name": "nitra-fastify",
+  "description": "Fastify helper",
+  "version": "1.0.0",
+  "type": "module",
+  "workspaces": [
+    "demo",
+    "npm"
+  ],
+  "bugs": "https://github.com/nitra/fastify/issues",
+  "homepage": "https://github.com/nitra/fastify",
+  "prettier": "@nitra/prettier-config",
+  "eslintConfig": {
+    "extends": [
+      "@nitra"
+    ],
+    "root": true
+  },
+  "devDependencies": {
+    "@nitra/cspell-dict": "^1.0.70",
+    "@nitra/eslint-config": "^1.0.24",
+    "@nitra/prettier-config": "^1.0.1"
+  },
+  "license": "MIT",
+  "packageManager": "yarn@3.2.3"
+}
