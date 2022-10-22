@@ -1,14 +1,17 @@
 import fastify from 'fastify'
 import { isDev } from '@nitra/isenv'
+import fastifySensible from '@fastify/sensible'
 
 const port = Number(process.env.PORT) || 8080
 
 export const app = fastify({
   logger: isDev,
-  http2: !!process.env.K_SERVICE // Запускаем в http2 если находимся в контейнере
+  http2: !!process.env.K_SERVICE // Запускаємо з http2 якщо в Cloud Run
 })
 
-// Обрабатываем только OPTIONS
+app.register(fastifySensible) // для reply.badRequest(`Not found url: ${req.url} ...`)
+
+// Опрацювання запитів OPTIONS
 app.options('/*', async (req, reply) => {
   // Ручний cors, бо WildcardOrigin Not Allowed
   setHeaders(req, reply)
@@ -20,7 +23,7 @@ app.options('/*', async (req, reply) => {
   reply.code(200).send()
 })
 
-// Запускаем сервер
+// Запускаємо сервер
 app.listen({ port, host: '0.0.0.0' })
 
 export function setHeaders(req, reply) {
