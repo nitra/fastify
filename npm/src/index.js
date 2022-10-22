@@ -23,7 +23,7 @@ app.options('/*', async (req, reply) => {
 // Запускаем сервер
 app.listen({ port, host: '0.0.0.0' })
 
-function setHeaders(req, reply) {
+export function setHeaders(req, reply) {
   let host = req.headers.origin || req.headers.referer
   if (!host) {
     host = 'localhost'
