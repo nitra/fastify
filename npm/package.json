@@ -1,7 +1,7 @@
 {
   "name": "@nitra/fastify",
   "description": "Fastify helper",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "type": "module",
   "main": "src/index.js",
   "files": [

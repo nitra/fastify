@@ -27,6 +27,7 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           access: public
           check-version: true
+          package: ./npm/package.json
 
       - name: get-npm-version
         id: package-version
