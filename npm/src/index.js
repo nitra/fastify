@@ -1,6 +1,7 @@
 import fastify from 'fastify'
 import { isDev } from '@nitra/isenv'
 import fastifySensible from '@fastify/sensible'
+import getLogger from '@nitra/bunyan/trace'
 
 const port = Number(process.env.PORT) || 8080
 
@@ -21,6 +22,11 @@ app.options('/*', async (req, reply) => {
   reply.header('Vary', 'origin')
 
   reply.code(200).send()
+})
+
+app.addHook('preHandler', (req, _, done) => {
+  req.log = getLogger(req)
+  done()
 })
 
 // Запускаємо сервер
