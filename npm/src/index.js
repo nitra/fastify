@@ -1,12 +1,12 @@
 import fastify from 'fastify'
-import { isDev } from '@nitra/isenv'
+// import { isDev } from '@nitra/isenv'
 import fastifySensible from '@fastify/sensible'
 import getLogger from '@nitra/bunyan/trace'
 
 const port = Number(process.env.PORT) || 8080
 
 export const app = fastify({
-  logger: isDev,
+  // logger: isDev,
   http2: !!process.env.K_SERVICE // Запускаємо з http2 якщо в Cloud Run
 })
 

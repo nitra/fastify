@@ -299,17 +299,9 @@ __metadata:
   dependencies:
     "@fastify/sensible": ^5.1.1
     "@nitra/bunyan": ^1.1.5
-    "@nitra/isenv": ^2.0.1
     fastify: ^4.9.2
   languageName: unknown
   linkType: soft
-
-"@nitra/isenv@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@nitra/isenv@npm:2.0.1"
-  checksum: b727551ab4a5f449b732aebd6e06f37139a38b5819a30ff7acb7242c7d45f7b6f92ce3c4bd6cc5c34262e6b1238cf6bcc1694cef63ddf2e6234336b4ce3e0078
-  languageName: node
-  linkType: hard
 
 "@nitra/prettier-config@npm:^1.0.1":
   version: 1.0.1
