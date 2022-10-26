@@ -14,9 +14,7 @@ app.register(fastifySensible) // для reply.badRequest(`Not found url: ${req.u
 
 // Опрацювання запитів OPTIONS
 app.options('/*', async (req, reply) => {
-  // Ручний cors, бо WildcardOrigin Not Allowed
-  setHeaders(req, reply)
-
+  // + setHeaders в preHandler
   reply.header('Access-Control-Max-Age', 86400)
   reply.header('Cache-Control', 'public, max-age=86400')
   reply.header('Vary', 'origin')
@@ -25,6 +23,7 @@ app.options('/*', async (req, reply) => {
 })
 
 app.addHook('preHandler', (req, reply, done) => {
+  // Ручний cors, бо WildcardOrigin Not Allowed
   setHeaders(req, reply)
 
   req.log = getLogger(req)
@@ -36,7 +35,7 @@ export async function listen() {
   return app.listen({ port, host: '0.0.0.0' })
 }
 
-export function setHeaders(req, reply) {
+function setHeaders(req, reply) {
   let host = req.headers.origin || req.headers.referer
   if (!host) {
     host = 'localhost'

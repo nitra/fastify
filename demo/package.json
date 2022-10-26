@@ -7,12 +7,13 @@
   "type": "module",
   "scripts": {
     "start": "env $(cat .env) yarn dlx nodemon src/index.js",
-    "e-call": "curl --data-binary '@test/call.txt' -H 'Content-Type: application/x-www-form-urlencoded' -X POST http://localhost:8089/events/call",
+    "e-test": "curl -I -X POST http://localhost:8089/test",
+    "e-opt": "curl -I -X OPTIONS http://localhost:8089/test",
     "fix": "yarn dlx standard --fix && yarn dlx prettier --write ."
   },
   "dependencies": {
     "@nitra/check-env": "^2.0.7",
-    "@nitra/fastify": "^1.1.1"
+    "@nitra/fastify": "workspace:^"
   },
   "devDependencies": {
     "@nitra/eslint-config": "^1.0.22"
