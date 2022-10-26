@@ -24,7 +24,9 @@ app.options('/*', async (req, reply) => {
   reply.code(200).send()
 })
 
-app.addHook('preHandler', (req, _, done) => {
+app.addHook('preHandler', (req, reply, done) => {
+  setHeaders(req, reply)
+
   req.log = getLogger(req)
   done()
 })

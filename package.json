@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "workspaces": [
+    "demo",
     "npm"
   ],
   "bugs": "https://github.com/nitra/fastify/issues",
