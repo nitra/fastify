@@ -43,5 +43,5 @@ function setHeaders(req, reply) {
 
   reply.header('Access-Control-Allow-Origin', host)
   reply.header('Access-Control-Allow-Credentials', 'true')
-  reply.header('Access-Control-Allow-Headers', 'Content-Type,*')
+  reply.header('Access-Control-Allow-Headers', '*')
 }
