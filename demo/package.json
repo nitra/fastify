@@ -6,7 +6,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "env $(cat .env) yarn dlx nodemon src/index.js",
+    "start": "env $(cat .env) node --watch src/index.js",
     "e-test": "curl -I -X POST http://localhost:8089/test",
     "e-opt": "curl -I -X OPTIONS http://localhost:8089/test",
     "fix": "yarn dlx standard --fix && yarn dlx prettier --write ."
