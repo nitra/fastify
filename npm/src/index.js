@@ -43,22 +43,5 @@ function setHeaders(req, reply) {
 
   reply.header('Access-Control-Allow-Origin', host)
   reply.header('Access-Control-Allow-Credentials', 'true')
-  // // Дозволяємо всі хедери які прийшли
-  // let headers = Object.keys(req.headers)
-  // const alwaysAllowedHeaders = [
-  //   'cache-control',
-  //   'content-language',
-  //   'content-length',
-  //   'content-type',
-  //   'expires',
-  //   'last-modified',
-  //   'pragma',
-  //   'accept',
-  //   'accept-language'
-  // ]
-  // // Окрім виду :method
-  // // та https://fetch.spec.whatwg.org/#cors-safelisted-request-header
-  // headers = headers.filter(word => !word.startsWith(':') && !alwaysAllowedHeaders.includes(word))
-  // reply.header('Access-Control-Allow-Headers', headers.join(','))
   reply.header('Access-Control-Allow-Headers', 'Content-Type,*')
 }
