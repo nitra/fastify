@@ -40,11 +40,11 @@ jobs:
           to-tag: HEAD
           allow-unknown: true
 
-      - name: 🛎️ Create release
-        uses: ncipollo/release-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: v${{ steps.package-version.outputs.current-version}}
-          # draft: true
-          body: |
-            ${{ steps.Changelog.outputs.changelog }}
+      # - name: 🛎️ Create release
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     tag: v${{ steps.package-version.outputs.current-version}}
+      #     # draft: true
+      #     body: |
+      #       ${{ steps.Changelog.outputs.changelog }}
