@@ -27,6 +27,8 @@ app.addHook('preHandler', (req, reply, done) => {
   setHeaders(req, reply)
 
   req.log = getLogger(req)
+  req.log.info('req.url: ', req.url)
+
   done()
 })
 

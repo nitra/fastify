@@ -3,7 +3,6 @@ import { app, listen } from '@nitra/fastify'
 // Обрабатываем только POST
 app.post('/*', async (req, reply) => {
   const log = req.log
-  req.log.info('req.url: ', req.url)
 
   // Код по умолчанию
   let code = 200
