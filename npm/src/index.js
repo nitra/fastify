@@ -38,10 +38,7 @@ export async function listen() {
 }
 
 function setHeaders(req, reply) {
-  req.log.info(':authority ', req.headers[':authority'])
-  req.log.info(':authority: ', req.headers[':authority:'])
-
-  let host = req.headers[':authority'] || req.headers.origin || req.headers.referer
+  let host = process.env.ORIGIN || req.headers.origin || req.headers.referer
   if (!host) {
     host = 'localhost'
   }
