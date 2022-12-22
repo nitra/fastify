@@ -26,8 +26,10 @@ app.addHook('preHandler', (req, reply, done) => {
   // Ручний cors, бо WildcardOrigin Not Allowed
   setHeaders(req, reply)
 
-  req.log = getLogger(req)
-  req.log.info('req.url: ', req.url)
+  if (req.method !== 'OPTIONS') {
+    req.log = getLogger(req)
+    req.log.info('req.url: ', req.url)
+  }
 
   done()
 })
