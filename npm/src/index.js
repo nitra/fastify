@@ -1,13 +1,13 @@
 import fastify from 'fastify'
 import fastifySensible from '@fastify/sensible'
 import getLogger from '@nitra/bunyan/trace'
-import { exit } from 'node:process'
+import { exit, env } from 'node:process'
 
-const port = Number(process.env.PORT) || 8080
+const port = Number(env.PORT) || 8080
 
 export const app = fastify({
   // logger: isDev,
-  http2: !!process.env.K_SERVICE // Запускаємо з http2 якщо в Cloud Run
+  http2: !!env.K_SERVICE // Запускаємо з http2 якщо в Cloud Run
 })
 
 app.register(fastifySensible) // для reply.badRequest(`Not found url: ${req.url} ...`)
@@ -46,7 +46,7 @@ export function listen() {
 }
 
 function setHeaders(req, reply) {
-  let host = process.env.ORIGIN || req.headers.origin || req.headers.referer
+  let host = env.ORIGIN || req.headers.origin || req.headers.referer
   if (!host) {
     host = 'localhost'
   }
