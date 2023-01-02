@@ -1,7 +1,7 @@
 import fastify from 'fastify'
-// import { isDev } from '@nitra/isenv'
 import fastifySensible from '@fastify/sensible'
 import getLogger from '@nitra/bunyan/trace'
+import { exit } from 'node:process'
 
 const port = Number(process.env.PORT) || 8080
 
@@ -35,8 +35,14 @@ app.addHook('preHandler', (req, reply, done) => {
 })
 
 // Запускаємо сервер
-export async function listen() {
-  return app.listen({ port, host: '0.0.0.0' })
+export function listen() {
+  app
+    .listen({ port, host: '0.0.0.0' })
+    .then(address => console.log(`🚀 Server ready at ${address}`))
+    .catch(err => {
+      console.error('Error starting server:', err)
+      exit(1)
+    })
 }
 
 function setHeaders(req, reply) {
