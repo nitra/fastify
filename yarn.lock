@@ -249,15 +249,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nitra/bunyan@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "@nitra/bunyan@npm:1.3.0"
+"@nitra/bunyan@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@nitra/bunyan@npm:2.0.0"
   dependencies:
     "@google-cloud/logging-bunyan": ^4.2.2
+    "@nitra/gcp-metadata": ^1.0.1
     bunyan: ^1.8.15
     bunyan-debug-stream: ^3.0.2
-    gcp-metadata: ^5.0.0
-  checksum: 9ff1809764707846a012bdd6db84c2e8f89586362bef824fd9a305700a56d4b6be9cdc8c8d251db6ea6aca73a5f0f3b3bab06f59e49ac61dffe2f1d84caacf9f
+  checksum: 5ae1ed04c0a8868a35f135cd306aa28d7b3686427c7d6ac8703168a346fc67ce7622bebec3db3d2b668108193b5e11e56a34b451530ca21374fad683f8797236
   languageName: node
   linkType: hard
 
@@ -298,10 +298,19 @@ __metadata:
   resolution: "@nitra/fastify@workspace:npm"
   dependencies:
     "@fastify/sensible": ^5.1.1
-    "@nitra/bunyan": ^1.3.0
+    "@nitra/bunyan": ^2.0.0
     fastify: ^4.9.2
   languageName: unknown
   linkType: soft
+
+"@nitra/gcp-metadata@npm:^1.0.1":
+  version: 1.2.0
+  resolution: "@nitra/gcp-metadata@npm:1.2.0"
+  dependencies:
+    gcp-metadata: ^5.2.0
+  checksum: e512b322e53b272e9a1bd747fed4e3afefd16dc3308d452cad8b0851f62f6d2ee3b31573088177b795dcabe0fe2a204f672a8a432096c3fd142da687311508f6
+  languageName: node
+  linkType: hard
 
 "@nitra/prettier-config@npm:^1.0.1":
   version: 1.0.1
@@ -1912,6 +1921,16 @@ __metadata:
     gaxios: ^5.0.0
     json-bigint: ^1.0.0
   checksum: abc0a3b8375c4101fa80b492d108bebbefa5531b8b5ecf9adefef0def2631d242263e17dd8d2917068fab7954992347004b1c18240f89832083bb964974dfecf
+  languageName: node
+  linkType: hard
+
+"gcp-metadata@npm:^5.2.0":
+  version: 5.3.0
+  resolution: "gcp-metadata@npm:5.3.0"
+  dependencies:
+    gaxios: ^5.0.0
+    json-bigint: ^1.0.0
+  checksum: 891ea0b902a17f33d7bae753830d23962b63af94ed071092c30496e7d26f8128ba9af43c3d38474bea29cb32a884b4bcb5720ce8b9de4a7e1108475d3d7ae219
   languageName: node
   linkType: hard
 
