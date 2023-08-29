@@ -2,8 +2,6 @@ import { app, listen } from '@nitra/fastify'
 
 // Обрабатываем только POST
 app.post('/*', async (req, reply) => {
-  const log = req.log
-
   // Код по умолчанию
   let code = 200
   const resp = {}
@@ -11,19 +9,17 @@ app.post('/*', async (req, reply) => {
   try {
     switch (req.url) {
       case '/test': {
-        log.info('/test')
+        req.log.info('/test')
         break
       }
       default: {
-        log.info('default: ', req.url)
-        return
+        req.log.info('default: ', req.url)
       }
     }
   } catch (err) {
     req.log.error(err)
     resp.error = 'Ошибка...'
     code = 400
-    log.error(err)
   } finally {
     reply.code(code).send(resp)
   }
