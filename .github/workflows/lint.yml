@@ -38,4 +38,4 @@ jobs:
           YARN_CHECKSUM_BEHAVIOR: ignore
 
       - name: Eslint
-        run: yarn dlx eslint . --ext .js
+        run: yarn dlx eslint .

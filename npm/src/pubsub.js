@@ -1,6 +1,6 @@
-import fastify from 'fastify'
 import getLogger from '@nitra/bunyan/trace'
-import { exit, env } from 'node:process'
+import fastify from 'fastify'
+import { env, exit } from 'node:process'
 
 const port = Number(env.PORT) || 8080
 
@@ -15,13 +15,15 @@ app.addHook('preHandler', (req, _, done) => {
   done()
 })
 
-// Запускаємо сервер
+/**
+ * Запускаємо сервер
+ */
 export function listen() {
   app
     .listen({ port, host: '0.0.0.0' })
     .then(address => console.log(`🚀 PubSub Consumer ready at ${address}`))
-    .catch(err => {
-      console.error('Error starting server:', err)
+    .catch(error => {
+      console.error('Error starting server:', error)
       exit(1)
     })
 }

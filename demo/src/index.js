@@ -16,8 +16,8 @@ app.post('/*', async (req, reply) => {
         req.log.info('default: ', req.url)
       }
     }
-  } catch (err) {
-    req.log.error(err)
+  } catch (error) {
+    req.log.error(error)
     resp.error = 'Ошибка...'
     code = 400
   } finally {
