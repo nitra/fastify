@@ -16,7 +16,7 @@
     "@nitra/fastify": "workspace:^"
   },
   "devDependencies": {
-    "@nitra/eslint-config": "^2.0.26"
+    "@nitra/eslint-config": "^2.1.1"
   },
   "eslintConfig": {
     "extends": [

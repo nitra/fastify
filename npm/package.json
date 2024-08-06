@@ -1,7 +1,7 @@
 {
   "name": "@nitra/fastify",
   "description": "Fastify helper",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "type": "module",
   "main": "src/index.js",
   "files": [
@@ -25,6 +25,6 @@
   "dependencies": {
     "@fastify/sensible": "^5.6.0",
     "@nitra/bunyan": "^2.0.3",
-    "fastify": "^4.27.0"
+    "fastify": "^4.28.1"
   }
 }

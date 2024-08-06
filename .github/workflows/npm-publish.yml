@@ -13,7 +13,7 @@ jobs:
   publish-npm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           # Full git history is needed to get a proper list of changed files within `super-linter` and for Changelog
           fetch-depth: 0
@@ -48,3 +48,14 @@ jobs:
       #     # draft: true
       #     body: |
       #       ${{ steps.Changelog.outputs.changelog }}
+
+      - name: Vulnerability - library
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          vuln-type: 'library'
+          scanners: 'vuln'
+          ignore-unfixed: true
+          format: 'table'
+          exit-code: '1'
