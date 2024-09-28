@@ -12,18 +12,9 @@
     "fix": "yarn dlx standard --fix && yarn dlx prettier --write ."
   },
   "dependencies": {
-    "@nitra/check-env": "^3.2.0",
     "@nitra/fastify": "workspace:^"
   },
-  "devDependencies": {
-    "@nitra/eslint-config": "^2.1.1"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@nitra/eslint-config/node"
-    ]
-  },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   }
 }

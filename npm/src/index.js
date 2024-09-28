@@ -1,13 +1,13 @@
 import fastifySensible from '@fastify/sensible'
-import getLogger from '@nitra/bunyan/trace'
+import logger from '@nitra/pino/fastify'
 import fastify from 'fastify'
 import { env, exit } from 'node:process'
 
 const port = Number(env.PORT) || 8080
 
 export const app = fastify({
-  // logger: isDev,
-  bodyLimit: (process.env.BODY_LIMIT_MB || 1) * 1024 * 1024,
+  logger,
+  bodyLimit: (env.BODY_LIMIT_MB || 1) * 1024 * 1024,
   http2: !!env.K_SERVICE // Запускаємо з http2 якщо в Cloud Run
 })
 
@@ -27,13 +27,9 @@ app.addHook('preHandler', (req, reply, done) => {
   // Ручний cors, бо WildcardOrigin Not Allowed
   setHeaders(req, reply)
 
-  if (req.method !== 'OPTIONS') {
-    req.log = getLogger(req)
-    req.log.info('req.url: ', req.url)
-  }
-
   done()
 })
+
 //
 /**
  * Запускаємо сервер

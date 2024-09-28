@@ -1,7 +1,7 @@
 {
   "name": "@nitra/fastify",
   "description": "Fastify helper",
-  "version": "1.7.1",
+  "version": "2.0.0",
   "type": "module",
   "main": "src/index.js",
   "files": [
@@ -23,8 +23,8 @@
   "homepage": "https://github.com/nitra/fastify",
   "license": "MIT",
   "dependencies": {
-    "@fastify/sensible": "^5.6.0",
-    "@nitra/bunyan": "^2.0.3",
-    "fastify": "^4.28.1"
+    "@fastify/sensible": "^6.0.1",
+    "@nitra/pino": "^1.0.5",
+    "fastify": "^5.0.0"
   }
 }
