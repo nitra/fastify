@@ -1,7 +1,4 @@
 {
-  "name": "demo",
-  "version": "1.0.0",
-  "main": "src/index.js",
   "author": "<ai@nitra.ai>",
   "private": true,
   "type": "module",
