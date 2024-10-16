@@ -1,4 +1,4 @@
-import logger from '@nitra/pino/fastify'
+import logger from '@nitra/pino'
 import fastify from 'fastify'
 import { env, exit } from 'node:process'
 
