@@ -18,7 +18,7 @@ app.post('/*', async (req, reply) => {
     }
   } catch (error) {
     req.log.error(error)
-    resp.error = 'Ошибка...'
+    resp.error = 'Помилка...'
     code = 400
   } finally {
     reply.code(code).send(resp)
