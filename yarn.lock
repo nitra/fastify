@@ -255,9 +255,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nitra/eslint-config@npm:^2.2.2":
-  version: 2.2.2
-  resolution: "@nitra/eslint-config@npm:2.2.2"
+"@nitra/eslint-config@npm:^2.2.3":
+  version: 2.2.3
+  resolution: "@nitra/eslint-config@npm:2.2.3"
   dependencies:
     "@eslint/js": "npm:^9.12.0"
     eslint: "npm:^9.12.0"
@@ -271,7 +271,7 @@ __metadata:
     eslint-plugin-vue: "npm:^9.28.0"
     eslint-plugin-yml: "npm:^1.14.0"
     globals: "npm:^15.10.0"
-  checksum: 10/1fac2fc9ef1da3d3dec67557bb3f99b62adcd80c6c2e3f7eb873703b759cc3316f4e68baa9e28707110e671cd9170e70ac924f8523933dea931a98cea397b483
+  checksum: 10/fc71aa0ea4bed446ed7df0e6f838134e895a2b2eedd756d495d4bbfc32f55e9913cafad3e27659e557868dc30de01c4dd22d31cd6a17a3a6fb37e43255be766c
   languageName: node
   linkType: hard
 
@@ -280,7 +280,7 @@ __metadata:
   resolution: "@nitra/fastify@workspace:npm"
   dependencies:
     "@fastify/sensible": "npm:^6.0.1"
-    "@nitra/pino": "npm:^1.2.1"
+    "@nitra/pino": "npm:^1.3.1"
     fastify: "npm:^5.0.0"
   languageName: unknown
   linkType: soft
@@ -292,16 +292,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nitra/pino@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "@nitra/pino@npm:1.2.1"
+"@nitra/pino@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "@nitra/pino@npm:1.3.1"
   dependencies:
     "@nitra/isenv": "npm:^2.0.1"
     pino: "npm:^9.4.0"
     pino-opentelemetry-transport: "npm:^1.0.1"
     pino-pretty: "npm:^11.2.2"
     pretty-ms: "npm:^9.1.0"
-  checksum: 10/a0ff4ff725ada6d510f582b0b05983603eab7d54c6bbe5e7223c5257634222f65f032e1a8d88b0939fae55492d86126fc6c65bc396def2af68fd249b3746a44c
+  checksum: 10/f56b2122f809b9401b55dde294ff887164a0d688538c00364e29ed0059168f325dce8a08d054456bfdc703ae2ad41556fece15036adae3c0042a93a19e908b56
   languageName: node
   linkType: hard
 
@@ -2807,7 +2807,7 @@ __metadata:
   resolution: "nitra-fastify@workspace:."
   dependencies:
     "@nitra/cspell-dict": "npm:^1.0.146"
-    "@nitra/eslint-config": "npm:^2.2.2"
+    "@nitra/eslint-config": "npm:^2.2.3"
     "@nitra/prettier-config": "npm:^1.0.1"
   languageName: unknown
   linkType: soft

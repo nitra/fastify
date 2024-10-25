@@ -16,6 +16,10 @@ export const app = fastify({
 //   done()
 // })
 
+app.get('/healthz', function (_request, reply) {
+  reply.code(200).send({ statusCode: 200, status: 'ok' })
+})
+
 /**
  * Запускаємо сервер
  */

@@ -23,6 +23,10 @@ app.options('/*', async (req, reply) => {
   reply.code(200).send()
 })
 
+app.get('/healthz', function (_request, reply) {
+  reply.code(200).send({ statusCode: 200, status: 'ok' })
+})
+
 app.addHook('preHandler', (req, reply, done) => {
   // Ручний cors, бо WildcardOrigin Not Allowed
   setHeaders(req, reply)
