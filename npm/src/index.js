@@ -1,12 +1,12 @@
 import fastifySensible from '@fastify/sensible'
-import loggerInstance from '@nitra/pino'
+import getLogger from '@nitra/pino/trace'
 import fastify from 'fastify'
 import { env, exit } from 'node:process'
 
 const port = Number(env.PORT) || 8080
 
 export const app = fastify({
-  loggerInstance,
+  loggerInstance: getLogger(),
   bodyLimit: (env.BODY_LIMIT_MB || 1) * 1024 * 1024,
   http2: !!env.K_SERVICE // Запускаємо з http2 якщо в Cloud Run
 })
@@ -30,6 +30,9 @@ app.get('/healthz', function (_request, reply) {
 app.addHook('preHandler', (req, reply, done) => {
   // Ручний cors, бо WildcardOrigin Not Allowed
   setHeaders(req, reply)
+
+  // Додаємо до логеру traceId
+  req.log = getLogger(req)
 
   done()
 })
