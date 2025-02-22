@@ -1,8 +1,8 @@
 import { app, listen } from '@nitra/fastify'
 
-// Обрабатываем только POST
+// Опрацьовуємо тільки POST
 app.post('/*', async (req, reply) => {
-  // Код по умолчанию
+  // Код за замовчуванням
   let code = 200
   const resp = {}
 
@@ -25,5 +25,5 @@ app.post('/*', async (req, reply) => {
   }
 })
 
-// Запускаем сервер
+// Запускаємо сервер
 listen()

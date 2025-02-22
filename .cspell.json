@@ -13,6 +13,7 @@
     "@nitra/cspell-dict/cspell-ext.json"
   ],
   "words": [
-    "Fastify"
+    "Fastify",
+    "логеру"
   ]
 }

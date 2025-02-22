@@ -1,0 +1,21 @@
+{
+  "name": "nexus",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "author": "vitaliytv <vitaliytv@nitralabs.com>",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "env $(cat .env) node --watch src"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.11.3",
+    "@nitra/as-integrations-fastify": "^3.0.2",
+    "@nitra/fastify": "workspace:^",
+    "graphql": "^16.10.0",
+    "nexus": "^1.3.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
