@@ -289,7 +289,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.21.0, @eslint/js@npm:^9.16.0":
+"@eslint/js@npm:9.21.0, @eslint/js@npm:^9.19.0":
   version: 9.21.0
   resolution: "@eslint/js@npm:9.21.0"
   checksum: 10/6c03f96a3e7c5825e780c707edbaa211ca976007a7194794a1e0cfaba76eae8759c9076ac15cab929b57323a117a385e99711395cbb3e58b8af7e5d95097160c
@@ -366,7 +366,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fastify/sensible@npm:^6.0.1":
+"@fastify/sensible@npm:^6.0.3":
   version: 6.0.3
   resolution: "@fastify/sensible@npm:6.0.3"
   dependencies:
@@ -516,30 +516,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nitra/cspell-dict@npm:^1.0.150":
+"@nitra/cspell-dict@npm:^1.0.155":
   version: 1.0.155
   resolution: "@nitra/cspell-dict@npm:1.0.155"
   checksum: 10/c1a12ba0b6c5658b8ce7aa9ab8566b1311c52d59c396ddbbfb37fed34e82bb5a77a5be536002bf6fdba8091f79d6dbcdbf1480140a890dde3d3527028819f1e9
   languageName: node
   linkType: hard
 
-"@nitra/eslint-config@npm:^2.2.3":
-  version: 2.3.2
-  resolution: "@nitra/eslint-config@npm:2.3.2"
+"@nitra/eslint-config@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@nitra/eslint-config@npm:3.0.0"
   dependencies:
-    "@eslint/js": "npm:^9.16.0"
-    eslint: "npm:^9.16.0"
-    eslint-config-prettier: "npm:^9.1.0"
+    "@eslint/js": "npm:^9.19.0"
+    eslint: "npm:^9.19.0"
+    eslint-config-prettier: "npm:^10.0.1"
     eslint-plugin-import: "npm:^2.31.0"
-    eslint-plugin-jsdoc: "npm:^50.6.1"
+    eslint-plugin-jsdoc: "npm:^50.6.3"
     eslint-plugin-markdown: "npm:^5.1.0"
-    eslint-plugin-n: "npm:^17.15.0"
+    eslint-plugin-n: "npm:^17.15.1"
+    eslint-plugin-oxlint: "npm:^0.15.9"
     eslint-plugin-security: "npm:^3.0.1"
     eslint-plugin-unicorn: "npm:^56.0.1"
     eslint-plugin-vue: "npm:^9.32.0"
     eslint-plugin-yml: "npm:^1.16.0"
-    globals: "npm:^15.13.0"
-  checksum: 10/6adc6a465a619995eec9dfb6460bbb6ceaea970dddd71bfc34a80317183a8c6f04ff4d60df41f18033017bfc4c1ef2ac9214462c64f4acf6b6e28cce5bda371f
+    globals: "npm:^15.14.0"
+  checksum: 10/eb316a0ec337afdea083b9b91c81576a3e48117801294e17c65f5c5002e36d1d568c37b6014bd07bfae33cbe1755d26f4fa413f2a9275f1cac65357b76dce2ef
   languageName: node
   linkType: hard
 
@@ -547,9 +548,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nitra/fastify@workspace:npm"
   dependencies:
-    "@fastify/sensible": "npm:^6.0.1"
-    "@nitra/pino": "npm:^1.4.4"
-    fastify: "npm:^5.1.0"
+    "@fastify/sensible": "npm:^6.0.3"
+    "@nitra/pino": "npm:^1.5.0"
+    fastify: "npm:^5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -569,9 +570,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nitra/pino@npm:^1.4.4":
-  version: 1.4.4
-  resolution: "@nitra/pino@npm:1.4.4"
+"@nitra/pino@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@nitra/pino@npm:1.5.0"
   dependencies:
     "@nitra/gcp-metadata": "npm:^1.4.3"
     "@nitra/isenv": "npm:^2.0.1"
@@ -581,7 +582,7 @@ __metadata:
     pino-opentelemetry-transport: "npm:^1.0.1"
     pino-pretty: "npm:^11.2.2"
     pretty-ms: "npm:^9.1.0"
-  checksum: 10/7ab0a089a252e23bbff0e302c1144260a416acc5036f765075064fbfd93d4b7932c3d0858976ac696684bfcb8f0138165cd9a11d775c530a64777dc370359f1c
+  checksum: 10/21daf4312df92bc873b0f58a4a25786a2ac8e3246748c6471252d18cac807883aad83a2a20c6d2cae6ca8617bbdbd7e6493823e3c736b28e19ad2624bb0bd202
   languageName: node
   linkType: hard
 
@@ -1980,14 +1981,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:^9.1.0":
-  version: 9.1.0
-  resolution: "eslint-config-prettier@npm:9.1.0"
+"eslint-config-prettier@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "eslint-config-prettier@npm:10.0.1"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
-    eslint-config-prettier: bin/cli.js
-  checksum: 10/411e3b3b1c7aa04e3e0f20d561271b3b909014956c4dba51c878bf1a23dbb8c800a3be235c46c4732c70827276e540b6eed4636d9b09b444fd0a8e07f0fcd830
+    eslint-config-prettier: build/bin/cli.js
+  checksum: 10/ba6875df0fc4fd3c7c6e2ec9c2e6a224462f7afc662f4cf849775c598a3571c1be136a9b683b12971653b3dcf3f31472aaede3076524b46ec9a77582630158e5
   languageName: node
   linkType: hard
 
@@ -2056,7 +2057,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^50.6.1":
+"eslint-plugin-jsdoc@npm:^50.6.3":
   version: 50.6.3
   resolution: "eslint-plugin-jsdoc@npm:50.6.3"
   dependencies:
@@ -2088,7 +2089,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-n@npm:^17.15.0":
+"eslint-plugin-n@npm:^17.15.1":
   version: 17.15.1
   resolution: "eslint-plugin-n@npm:17.15.1"
   dependencies:
@@ -2103,6 +2104,15 @@ __metadata:
   peerDependencies:
     eslint: ">=8.23.0"
   checksum: 10/43fc161949fa0346ac7063a30580cd0db27e216b8e6a48d73d0bf4f10b88e9b65f263399843b3fe2087f766f264d16f0cbe8f2f898591516842201dc115a2d21
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-oxlint@npm:^0.15.9":
+  version: 0.15.11
+  resolution: "eslint-plugin-oxlint@npm:0.15.11"
+  dependencies:
+    jsonc-parser: "npm:^3.3.1"
+  checksum: 10/52cf1c281df216cd5a1324f259b9745bbaaccef14bb1670690c22f8f07fda3d676e750019536c094e5ca094c95ffe14a8abd4d21a15062d1eeb0ae256ea61a73
   languageName: node
   linkType: hard
 
@@ -2208,7 +2218,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9.16.0":
+"eslint@npm:^9.19.0":
   version: 9.21.0
   resolution: "eslint@npm:9.21.0"
   dependencies:
@@ -2481,7 +2491,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify@npm:^5.1.0, fastify@npm:^5.2.1":
+"fastify@npm:^5.2.1":
   version: 5.2.1
   resolution: "fastify@npm:5.2.1"
   dependencies:
@@ -2752,7 +2762,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^15.11.0, globals@npm:^15.13.0, globals@npm:^15.9.0":
+"globals@npm:^15.11.0, globals@npm:^15.14.0, globals@npm:^15.9.0":
   version: 15.15.0
   resolution: "globals@npm:15.15.0"
   checksum: 10/7f561c87b2fd381b27fc2db7df8a4ea7a9bb378667b8a7193e61fd2ca3a876479174e2a303a74345fbea6e1242e16db48915c1fd3bf35adcf4060a795b425e18
@@ -3384,6 +3394,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsonc-parser@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "jsonc-parser@npm:3.3.1"
+  checksum: 10/9b0dc391f20b47378f843ef1e877e73ec652a5bdc3c5fa1f36af0f119a55091d147a86c1ee86a232296f55c929bba174538c2bf0312610e0817a22de131cc3f4
+  languageName: node
+  linkType: hard
+
 "keyv@npm:^4.5.4":
   version: 4.5.4
   resolution: "keyv@npm:4.5.4"
@@ -3663,6 +3680,7 @@ __metadata:
   dependencies:
     "@apollo/server": "npm:^4.11.3"
     "@nitra/as-integrations-fastify": "npm:^3.0.2"
+    "@nitra/fastify": "workspace:^"
     fastify: "npm:^5.2.1"
     graphql: "npm:^16.10.0"
     nexus: "npm:^1.3.0"
@@ -3673,8 +3691,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nitra-fastify@workspace:."
   dependencies:
-    "@nitra/cspell-dict": "npm:^1.0.150"
-    "@nitra/eslint-config": "npm:^2.2.3"
+    "@nitra/cspell-dict": "npm:^1.0.155"
+    "@nitra/eslint-config": "npm:^3.0.0"
     "@nitra/prettier-config": "npm:^1.0.1"
   languageName: unknown
   linkType: soft

@@ -17,5 +17,8 @@
   },
   "engines": {
     "node": ">=22.0.0"
+  },
+  "devDependencies": {
+    "fastify": "^5.2.1"
   }
 }
