@@ -44,9 +44,14 @@ app.addHook('preHandler', (req, reply, done) => {
  * Запускаємо сервер
  */
 export function listen() {
+  // Якщо ми запущені з нексусом
+  // то додаємо в шлях в консолі '/graphql'
+  const pluginMeta = app[Symbol.for('registered-plugin')]
+  const path = pluginMeta.includes('@nitra/as-integrations-fastify') ? '/graphql' : ''
+
   app
     .listen({ port, host: '0.0.0.0' })
-    .then(address => log.info(`🚀 Server ready at ${address}`))
+    .then(address => log.info(`🚀 Server ready at ${address + path}`))
     .catch(error => {
       log.error('Error starting server:', error)
       exit(1)
