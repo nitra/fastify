@@ -1,7 +1,7 @@
 import { app, listen } from '@nitra/fastify'
 
 // Опрацьовуємо тільки POST
-app.post('/*', async (req, reply) => {
+app.post('/*', (req, reply) => {
   // Код за замовчуванням
   let code = 200
   const resp = {}
