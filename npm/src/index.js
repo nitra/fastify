@@ -25,8 +25,8 @@ app.options('/*', (req, reply) => {
   reply.code(200).send()
 })
 
-app.get('/healthz', function (_request, reply) {
-  reply.code(200).send({ statusCode: 200, status: 'ok' })
+app.get('/healthz', { logLevel: 'silent' }, () => {
+  return { status: 'ok' }
 })
 
 app.addHook('preHandler', (req, reply, done) => {

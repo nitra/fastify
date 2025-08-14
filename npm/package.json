@@ -1,15 +1,14 @@
 {
   "name": "@nitra/fastify",
   "description": "Fastify helper",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "type": "module",
   "main": "src/index.js",
   "files": [
     "src"
   ],
   "exports": {
-    ".": "./src/index.js",
-    "./pubsub": "./src/pubsub.js"
+    ".": "./src/index.js"
   },
   "keywords": [
     "nitra",
