@@ -1,5 +1,6 @@
 {
   "author": "<ai@nitra.ai>",
+  "name": "demo",
   "private": true,
   "type": "module",
   "scripts": {
