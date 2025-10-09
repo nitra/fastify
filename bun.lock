@@ -28,10 +28,10 @@
     },
     "npm": {
       "name": "@nitra/fastify",
-      "version": "2.5.1",
+      "version": "2.5.2",
       "dependencies": {
         "@fastify/sensible": "^6.0.3",
-        "@nitra/pino": "^2.5.0",
+        "@nitra/pino": "^2.6.0",
         "fastify": "^5.6.1",
       },
     },
@@ -143,7 +143,7 @@
 
     "@nitra/isenv": ["@nitra/isenv@2.0.1", "", {}, "sha512-MZEOmA36RNe455xWlnA4aHy4WvPur7+cNT8JEKjiS5I2KabBO1SxGqNIJP4/kmMnNyU6sHZj2Ihdf2Qr7QG3yQ=="],
 
-    "@nitra/pino": ["@nitra/pino@2.5.0", "", { "dependencies": { "@nitra/gcp-metadata": "^1.4.3", "@nitra/isenv": "^2.0.1", "colorette": "^2.0.20", "eventid": "^2.0.1", "fast-safe-stringify": "^2.1.1", "pino": "^10.0.0", "pino-opentelemetry-transport": "^1.1.0", "pino-pretty": "^13.1.1", "pretty-ms": "^9.3.0" } }, "sha512-Up0jvAh106QIBE3oTOri1eiK6MLPiUpN62hrUyaVnm4lbiRcrllU4V3bUyBnNQ3I0TYe6TZfoBB+hDhq8FLqCA=="],
+    "@nitra/pino": ["@nitra/pino@2.6.0", "", { "dependencies": { "@nitra/gcp-metadata": "^1.4.3", "@nitra/isenv": "^2.0.1", "colorette": "^2.0.20", "eventid": "^2.0.1", "fast-safe-stringify": "^2.1.1", "pino": "^10.0.0", "pino-opentelemetry-transport": "^1.1.0", "pino-pretty": "^13.1.1", "pretty-ms": "^9.3.0" } }, "sha512-zBR8zbJsUGg1mIZH5Uy9TVS4LbLH33zKeejFzLty0j7gv0wS2IiAYVKaES2Eif5q0Antscq8H9vvduEinESrrw=="],
 
     "@nitra/prettier-config": ["@nitra/prettier-config@1.0.1", "", {}, "sha512-LEDgzCpzUjjxnxeaybkfMA782+EB7XAVt/BjCAx6zBsqdWTjbbWmb9rUFR00xUMm5AEzYVuoSMrE1dzpa+H+jQ=="],
 
