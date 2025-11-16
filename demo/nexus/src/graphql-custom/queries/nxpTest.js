@@ -1,17 +1,22 @@
 import { queryField } from 'nexus'
 
+/**
+ * @typedef {object} GraphQLContext
+ * @property {import('pino').Logger} log - логер Pino для запису подій
+ */
+
 export const nxrDB = queryField('nxpTest', {
   list: true,
   type: 'String',
 
   /**
    * Список
-   * @param {*} _ 1
-   * @param __ 2
-   * @param ctx 3
-   * @returns {Promise<Array>} r
+   * @param {unknown} _ 1
+   * @param {Record<string, unknown>} __ 2
+   * @param {GraphQLContext} ctx 3
+   * @returns {string[]} r
    */
-  async resolve(_, __, ctx) {
+  resolve(_, __, ctx) {
     try {
       ctx.log.info('nxpTest')
     } catch (error) {

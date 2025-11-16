@@ -60,8 +60,8 @@ export function listen() {
 
 /**
  *
- * @param {*} req req
- * @param {*} reply reply
+ * @param {import('fastify').FastifyRequest} req req
+ * @param {import('fastify').FastifyReply} reply reply
  */
 function setHeaders(req, reply) {
   let host = env.ORIGIN || req.headers.origin || req.headers.referer

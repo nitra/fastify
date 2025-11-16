@@ -1,1 +1,1 @@
-export * from './queries/nxpTest.js'
+export { nxrDB } from './queries/nxpTest.js'
