@@ -9,14 +9,14 @@ export const log = getLogger()
 
 export const app = fastify({
   loggerInstance: getLogger(),
-  bodyLimit: Number(env.BODY_LIMIT_MB || 1) * 1024 * 1024,
-  http2: !!env.K_SERVICE // Запускаємо з http2 якщо в Cloud Run
+  bodyLimit: Number(env.BODY_LIMIT_MB || 1) * 1024 * 1024
+  // http2: !!env.K_SERVICE // Запускаємо з http2 якщо в Cloud Run
 })
 
 app.register(fastifySensible) // для reply.badRequest(`Not found url: ${req.url} ...`)
 
 // Опрацювання запитів OPTIONS
-app.options('/*', (req, reply) => {
+app.options('/*', (_req, reply) => {
   // + setHeaders в preHandler
   reply.header('Access-Control-Max-Age', 86400)
   reply.header('Cache-Control', 'public, max-age=86400')
