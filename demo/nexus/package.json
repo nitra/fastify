@@ -9,10 +9,10 @@
     "start": "env $(cat .env) node --watch src"
   },
   "dependencies": {
-    "@apollo/server": "^5.1.0",
+    "@apollo/server": "^5.2.0",
     "@nitra/as-integrations-fastify": "^3.0.2",
     "@nitra/fastify": "workspace:^",
-    "graphql": "^16.11.0",
+    "graphql": "^16.12.0",
     "nexus": "^1.3.0"
   },
   "engines": {

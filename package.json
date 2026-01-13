@@ -17,8 +17,8 @@
     "root": true
   },
   "devDependencies": {
-    "@nitra/cspell-dict": "^1.0.179",
-    "@nitra/eslint-config": "^3.0.8",
+    "@nitra/cspell-dict": "^1.0.180",
+    "@nitra/eslint-config": "^3.0.11",
     "@nitra/prettier-config": "^1.0.1"
   },
   "license": "MIT"
