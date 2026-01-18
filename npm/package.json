@@ -1,30 +1,30 @@
 {
   "name": "@nitra/fastify",
+  "version": "2.5.7",
   "description": "Fastify helper",
-  "version": "2.5.6",
-  "type": "module",
-  "main": "src/index.js",
-  "files": [
-    "src"
-  ],
-  "exports": {
-    ".": "./src/index.js"
-  },
   "keywords": [
-    "nitra",
-    "fastify"
+    "fastify",
+    "nitra"
   ],
+  "homepage": "https://github.com/nitra/fastify",
+  "bugs": "https://github.com/nitra/fastify/issues",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/nitra/fastify.git"
   },
-  "bugs": "https://github.com/nitra/fastify/issues",
-  "homepage": "https://github.com/nitra/fastify",
-  "license": "MIT",
+  "files": [
+    "src"
+  ],
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
   "dependencies": {
     "@fastify/sensible": "^6.0.4",
-    "@nitra/pino": "^2.9.1",
-    "fastify": "^5.6.2"
+    "@nitra/pino": "^2.12.0",
+    "fastify": "^5.7.1"
   },
   "engines": {
     "node": ">=20.0.0"

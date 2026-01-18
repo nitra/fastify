@@ -1,7 +1,7 @@
 {
-  "author": "<ai@nitra.ai>",
   "name": "demo",
   "private": true,
+  "author": "<ai@nitra.ai>",
   "type": "module",
   "scripts": {
     "start": "env $(cat .env) node --watch src/index.js",

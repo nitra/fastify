@@ -1,25 +1,25 @@
 {
   "name": "nitra-fastify",
-  "description": "Fastify helper",
   "version": "1.0.0",
-  "type": "module",
+  "description": "Fastify helper",
+  "homepage": "https://github.com/nitra/fastify",
+  "bugs": "https://github.com/nitra/fastify/issues",
+  "license": "MIT",
   "workspaces": [
     "demo/*",
     "npm"
   ],
-  "bugs": "https://github.com/nitra/fastify/issues",
-  "homepage": "https://github.com/nitra/fastify",
+  "type": "module",
+  "devDependencies": {
+    "@nitra/cspell-dict": "^1.0.185",
+    "@nitra/eslint-config": "^3.0.11",
+    "@nitra/prettier-config": "^1.0.1"
+  },
   "prettier": "@nitra/prettier-config",
   "eslintConfig": {
     "extends": [
       "@nitra"
     ],
     "root": true
-  },
-  "devDependencies": {
-    "@nitra/cspell-dict": "^1.0.180",
-    "@nitra/eslint-config": "^3.0.11",
-    "@nitra/prettier-config": "^1.0.1"
-  },
-  "license": "MIT"
+  }
 }

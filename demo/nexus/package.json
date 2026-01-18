@@ -1,10 +1,10 @@
 {
   "name": "nexus",
   "version": "1.0.0",
-  "main": "src/index.js",
-  "author": "vitaliytv <vitaliytv@nitralabs.com>",
   "private": true,
+  "author": "vitaliytv <vitaliytv@nitralabs.com>",
   "type": "module",
+  "main": "src/index.js",
   "scripts": {
     "start": "env $(cat .env) node --watch src"
   },
