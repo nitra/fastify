@@ -16,7 +16,7 @@ export const app = fastify({
 app.register(fastifySensible) // для reply.badRequest(`Not found url: ${req.url} ...`)
 
 // Опрацювання запитів OPTIONS
-app.options('/*', (_req, reply) => {
+app.options('*', (_req, reply) => {
   // + setHeaders в preHandler
   reply.header('Access-Control-Max-Age', 86400)
   reply.header('Cache-Control', 'public, max-age=86400')
