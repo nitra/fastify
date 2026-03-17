@@ -13,6 +13,13 @@ export const app = fastify({
   // http2: !!env.K_SERVICE // Запускаємо з http2 якщо в Cloud Run
 })
 
+// За проксі (Cloudflare, nginx тощо) можуть приходити запити з невідомим/порожнім Content-Type → 415.
+// Дозволяємо будь-який тип: тіло не парситься, req.body лишається undefined.
+app.addContentTypeParser('*', (req, payload, done) => {
+  payload.resume()
+  done(null, undefined)
+})
+
 app.register(fastifySensible) // для reply.badRequest(`Not found url: ${req.url} ...`)
 
 // Опрацювання запитів OPTIONS
