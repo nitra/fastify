@@ -1,7 +1,27 @@
 {
   "version": "0.2",
   "language": "en,uk,ru-ru,nitra",
-  "ignorePaths": ["**/node_modules/**", "**/vscode-extension/**", "**/.git/**", ".vscode", "report", "yarn.lock"],
-  "import": ["@nitra/cspell-dict/cspell-ext.json"],
-  "words": ["Fastify", "логеру"]
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/vscode-extension/**",
+    "**/.git/**",
+    ".vscode",
+    "report",
+    "yarn.lock",
+    ".claude/**",
+    ".cursor/**",
+    ".pi/**",
+    "CLAUDE.md",
+    "AGENTS.md",
+    ".n-rules.json"
+  ],
+  "import": [
+    "@nitra/cspell-dict/cspell-ext.json"
+  ],
+  "words": [
+    "Fastify",
+    "логеру",
+    "worktree",
+    "worktrees"
+  ]
 }

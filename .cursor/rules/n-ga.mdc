@@ -1,0 +1,535 @@
+---
+description: Правила форматів для .github/workflows
+version: '1.12'
+globs: ".github/workflows/*.yml"
+alwaysApply: false
+---
+
+Правило **ga** перевіряє структуру `.github/workflows/`, наявність обов'язкових workflow-файлів і їх відповідність канонам, а також налаштування VS Code та zizmor для роботи з GitHub Actions.
+
+- `settings.json`:
+
+```json
+{ "[github-actions-workflow]": { "editor.defaultFormatter": "oxc.oxc-vscode" } }
+```
+- `git-ai.yml`:
+
+```yaml
+name: Git AI
+
+on:
+  pull_request:
+    types: [closed]
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  git-ai:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Install git-ai
+        run: |
+          curl -fsSL https://usegitai.com/install.sh | bash
+          echo "$HOME/.git-ai/bin" >> $GITHUB_PATH
+      - name: Run git-ai
+        id: run-git-ai
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git-ai ci github run
+```
+- `clean-ga-workflows.yml`:
+
+```yaml
+name: Clean action for removing completed workflow runs
+
+on:
+  schedule:
+    - cron: '0 1 16 * *'
+
+  # Allow workflow to be manually run from the GitHub UI
+  workflow_dispatch: {}
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  cleanup_old_workflows:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Delete workflow runs
+        uses: dmvict/clean-workflow-runs@v1
+        with:
+          token: ${{ github.token }}
+          save_period: 31
+          save_min_runs_number: 0
+```
+- `lint-ga.yml`:
+
+```yaml
+name: Lint GA
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+    paths:
+      - '.github/actions/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches:
+      - dev
+      - main
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  lint-ga:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-bun-deps
+
+      - uses: astral-sh/setup-uv@v8.0.0
+
+      - name: Install conftest
+        run: >-
+          curl -fsSL
+          https://github.com/open-policy-agent/conftest/releases/download/v0.62.0/conftest_0.62.0_Linux_x86_64.tar.gz
+          | sudo tar -xz -C /usr/local/bin conftest
+
+      - name: Lint GA
+        run: bunx n-rules lint ga --no-fix
+```
+- `zizmor.yml`:
+
+```yaml
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        '*': ref-pin
+```
+- `clean-merged-branch.yml`:
+
+```yaml
+name: Clean abandoned branches
+
+on:
+  # Run daily at midnight
+  schedule:
+    - cron: '0 1 15 * *'
+
+  # Allow workflow to be manually run from the GitHub UI
+  workflow_dispatch: {}
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  cleanup_old_branches:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - id: delete_stuff
+        name: Delete those pesky dead branches
+        uses: phpdocker-io/github-actions-delete-abandoned-branches@v2.0.3
+        with:
+          github_token: ${{ github.token }}
+          last_commit_age_days: 90
+          ignore_branches: main,dev
+          # Action CLI accepts only yes/no. Go-yaml in conftest parses `no` as
+          # boolean false, so the Rego policy normalizes both forms.
+          dry_run: no
+
+      - name: Get output
+        env:
+          DELETED_BRANCHES: ${{ steps.delete_stuff.outputs.deleted_branches }}
+        run: |
+          echo "Deleted branches: ${DELETED_BRANCHES}"
+```
+- `extensions.json`:
+
+```json
+{ "recommendations": ["github.vscode-github-actions"] }
+```
+- `uses-min-versions`:
+
+```json
+{
+  "actions/checkout": "6",
+  "Infisical/secrets-action": "1.0.16"
+}
+```
+- `lint-repo.yml`:
+
+```yaml
+name: Lint repo-wide
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+  pull_request:
+    branches:
+      - dev
+      - main
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  lint-repo:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-bun-deps
+
+      - name: Repo-wide lint
+        run: bunx n-rules lint --repo-wide --no-fix
+```
+
+## Repo-wide лінти (`lint-repo.yml`, обовʼязковий)
+
+Перевірки без path-підтримки (`scope: full` без glob: knip, jscpd, dep-policy тощо) живуть в окремому обовʼязковому workflow `.github/workflows/lint-repo.yml` із кроком `bunx n-rules lint --repo-wide --no-fix`. Він **не гейтить деплой** — жоден deploy-workflow не має на нього `needs`. Деталі: [lint_repo_yml.mdc](./lint_repo_yml/lint_repo_yml.mdc).
+
+## Сервіс-орієнтовані deploy-workflow (опційно)
+
+Монорепо з деплой-сервісами (каталог сервісу, напр. `run/nexus`) оформлює деплой per-service workflow: тригер `paths` по каталогу (dir-scoped glob `run/<service>/**` — саме він, а не імʼя файлу, робить workflow сервісним; імʼя довільне — `npm-publish.yml`, `deploy-<service>.yml`, і **не перейменовуй наявні** — OIDC trusted publishing привʼязаний до імені) → джоба `plan` (`bunx n-rules ci plan --path <svc> --github`) → паралельні `lint-<domain>`-джоби з гейтом по outputs плану + тести сервісу → deploy з `needs` на всі перевірки (skipped не блокує, failed блокує). Форму перевіряє rego-концерн `service_deploy_workflow` — вимоги вмикаються лише за наявності lint-джоб у workflow; приклад — `deploy-service.yml`:
+
+```yaml
+# Документаційний приклад сервіс-орієнтованого deploy-workflow (ga.mdc).
+# Це НЕ deep-subset-канон (перелік сервісів консюмер-специфічний) — форму
+# перевіряє service_deploy_workflow.rego за ЗМІСТОМ: сервісний workflow =
+# dir-scoped glob у on.push.paths. Імʼя файлу довільне (npm-publish.yml,
+# deploy-<service>.yml, …) — не перейменовуй наявні: OIDC trusted publishing
+# привʼязаний до імені workflow. Плейсхолдер run/<service> заміни на каталог
+# сервісу; набір lint-<domain> джоб добери під стеки сервісу (зайва джоба
+# нешкідлива — ci plan її скіпне).
+name: Deploy <service>
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+    paths:
+      - 'run/<service>/**'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      js: ${{ steps.plan.outputs.js }}
+      python: ${{ steps.plan.outputs.python }}
+      any: ${{ steps.plan.outputs.any }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-bun-deps
+
+      - id: plan
+        run: bunx n-rules ci plan --path run/<service> --github
+
+  lint-js:
+    needs: plan
+    if: needs.plan.outputs.js == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-bun-deps
+
+      - run: bunx n-rules lint js --path run/<service> --no-fix
+
+  # …lint-<domain> для кожного домену сервісу (python/docker/k8s/security/…)
+
+  test:
+    needs: plan
+    if: needs.plan.outputs.any == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-bun-deps
+
+      # python-стек: перед тестами ще uv (uses: astral-sh/setup-uv@v7 + uv sync --locked)
+      - run: bun test run/<service>
+
+  deploy:
+    needs:
+      - plan
+      - lint-js
+      - test
+    # Skipped-лінт (гейт ci plan) НЕ блокує деплой; failed — блокує.
+    if: ${{ !cancelled() && needs.plan.result == 'success' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      # …кроки деплою сервісу (build/push/apply)
+```, деталі — [service_deploy_workflow.mdc](./service_deploy_workflow/service_deploy_workflow.mdc). Співіснує з file-type-workflow (`lint-js.yml` тощо) — ті покривають зміни поза сервіс-каталогами.
+
+## Структура `clean-ga-workflows.yml` — видалення завершених workflow runs
+
+Rego-пакет: `ga.clean_ga_workflows`
+
+**Цільовий файл:** `.github/workflows/clean-ga-workflows.yml`
+
+### Що перевіряється
+
+- `name` — точна відповідність значенню з template
+- `on.schedule[].cron` — має містити cron із template (`0 1 16 * *`)
+- `on.workflow_dispatch` — має бути об'єктом `{}`
+- `jobs.cleanup_old_workflows` — job має існувати
+- `jobs.cleanup_old_workflows.runs-on` — відповідно до template (`ubuntu-latest`)
+- `jobs.cleanup_old_workflows.permissions` — `actions: write`, `contents: read`
+- `steps[0].name` і `steps[0].uses` — відповідно до template (`dmvict/clean-workflow-runs@v1`)
+- `steps[0].with` — `token`, `save_period`, `save_min_runs_number` як у template
+
+**Pin-aware `uses`:** SHA-пін того самого action (`owner/action@<40-hex SHA>`, з тег-коментарем `# vX` чи без) задовольняє канонічний тег із template. Якщо в репо вже SHA-пін (zizmor-політика ref-pin) — НЕ замінюй його тегом.
+
+Канон: [clean-ga-workflows.yml.snippet.yml](./template/clean-ga-workflows.yml.snippet.yml)
+
+## Структура `clean-merged-branch.yml` — видалення злитих гілок
+
+Rego-пакет: `ga.clean_merged_branch`
+
+**Цільовий файл:** `.github/workflows/clean-merged-branch.yml`
+
+### Що перевіряється
+
+- `name` — точна відповідність значенню з template
+- `on.schedule[].cron` — має містити cron із template (`0 1 15 * *`)
+- `on.workflow_dispatch` — має бути об'єктом `{}`
+- `jobs.cleanup_old_branches` — job має існувати
+- `jobs.cleanup_old_branches.permissions` — кожне поле із template (`contents: write`, `pull-requests: read`)
+- `steps` — має бути рівно 2 кроки
+- `steps[0].id` — `delete_stuff`; `steps[0].uses` — `phpdocker-io/github-actions-delete-abandoned-branches@v2.0.3`
+- `steps[0].with.github_token`, `last_commit_age_days` — за template
+- `steps[0].with.ignore_branches` — має містити всі гілки з template (`main,dev`)
+- `steps[0].with.dry_run` — `no` (нормалізується: YAML 1.1 `no` → boolean `false` у conftest)
+- `steps[1].name` — за template; `steps[1].env.DELETED_BRANCHES` — за template
+- `steps[1].run` — містить `Deleted branches:` та `${DELETED_BRANCHES}`
+
+**Pin-aware `uses`:** SHA-пін того самого action (`owner/action@<40-hex SHA>`, з тег-коментарем `# vX` чи без) задовольняє канонічний тег із template. Якщо в репо вже SHA-пін (zizmor-політика ref-pin) — НЕ замінюй його тегом.
+
+Канон: [clean-merged-branch.yml.snippet.yml](./template/clean-merged-branch.yml.snippet.yml)
+
+## Структура `git-ai.yml` — автоматичний запуск git-ai після мержу PR
+
+Rego-пакет: `ga.git_ai`
+
+**Цільовий файл:** `.github/workflows/git-ai.yml`
+
+### Що перевіряється
+
+- `name` — точна відповідність значенню з template (`Git AI`)
+- `on.pull_request.types` — має містити `closed`
+- `jobs.git-ai` — job має існувати
+- `jobs.git-ai.if` — містить `github.event.pull_request.merged == true`
+- `jobs.git-ai.permissions.contents` — за template (`write`)
+- `steps[*].run` (сукупно) — містить substring `https://usegitai.com/install.sh` (інсталяція)
+- `steps[*].run` (сукупно) — містить substring `git-ai ci github run` (запуск)
+
+Substring-перевірки замість exact-match через крихкість multi-line `run:` блоків.
+
+Канон: [git-ai.yml.snippet.yml](./template/git-ai.yml.snippet.yml)
+
+## Структура `lint-ga.yml` — CI-лінт GitHub Actions файлів
+
+Rego-пакет: `ga.lint_ga`
+
+**Цільовий файл:** `.github/workflows/lint-ga.yml`
+
+### Що перевіряється
+
+- `name` — точна відповідність значенню з template (`Lint GA`)
+- `on.push.branches` — superset: містить `dev` і `main`
+- `on.pull_request.branches` — superset: містить `dev` і `main`
+- `on.push.paths` — superset: містить `.github/actions/**` і `.github/workflows/**`
+- `jobs.lint-ga` — job має існувати
+- `jobs.lint-ga.runs-on` — за template (`ubuntu-latest`)
+- `jobs.lint-ga.permissions.contents` — `read`
+- `jobs.lint-ga.steps` — не порожній
+- `steps[*].uses` — кожен `uses:` з template має бути присутнім у кроках; SHA-пін того самого action (`owner/action@<40-hex SHA>`, з тег-коментарем `# vX` чи без) задовольняє канонічний тег — НЕ замінюй наявний SHA-пін тегом
+- `steps[*].run` (сукупно) — містить `open-policy-agent/conftest` (Install conftest)
+- `steps[*].run` (сукупно) — містить `n-rules lint ga --no-fix`
+
+Канон: [lint-ga.yml.snippet.yml](./template/lint-ga.yml.snippet.yml)
+
+## Deep-subset `.github/workflows/lint-repo.yml` (repo-wide перевірки)
+
+Цільовий файл: `.github/workflows/lint-repo.yml` — **обовʼязковий** для github-консюмерів.
+
+Repo-wide перевірки без path-підтримки (`scope: full` без glob: knip, jscpd, dep-policy, utils_imports тощо) не вміють скоупитись на каталог сервісу, тому живуть в окремому workflow з кроком `bunx n-rules lint --repo-wide --no-fix` і **не гейтять деплой**: жоден `deploy-*.yml` не має `needs` на цей workflow (сервіс-канон — `service_deploy_workflow`).
+
+Перевірка — чистий deep-subset без rego (`"check": "template"`): фактичний файл мусить структурно містити сніпет (тригер push/PR на dev/main без paths-фільтра, checkout з `persist-credentials: false`, prep `./.github/actions/setup-bun-deps`, крок `lint --repo-wide --no-fix`). Додаткові кроки/поля дозволені.
+
+Автофікс (`n-rules lint` у fix-режимі): відсутній файл створюється зі сніпета, наявний — deep-merge-ом добирає канонічні поля (T0, детерміновано).
+
+Канон-snippet: [lint-repo.yml.snippet.yml](./template/lint-repo.yml.snippet.yml)
+
+## Rego-gate сервіс-орієнтованих deploy-workflow (`.github/workflows/*.yml`)
+
+Rego-пакет: `ga.service_deploy_workflow`
+
+Цільові файли: усі `.github/workflows/*.yml` (walkGlob). Дискримінатор — **зміст, не імʼя файлу** (дзеркало ci-azure): сервісним вважається workflow із dir-scoped глобом у `on.push.paths` (`npm/**`, `run/<service>/**`). Імʼя довільне — `npm-publish.yml`, `deploy-<service>.yml` тощо; **перейменування часто неможливе**, бо OIDC trusted publishing привʼязаний до імені workflow-файлу. Глоби за типом файлу (`**/*.js` у lint-*.yml) і workflow без `paths` — поза каноном. **Plan-гейт вимагається лише коли у workflow є lint-джоби** (`n-rules lint … --path`): publish/deploy-workflow без сервісного лінт-гейта валідний as-is, перехід на гейт — свідоме рішення консюмера (додати lint-джоби → rego і автофікс доведуть форму).
+
+Канонічна форма per-service workflow (каталог сервісу — напр. `run/nexus`):
+
+1. **Тригер** — `on.push.paths` із глобом каталогу сервісу (`run/<service>/**`).
+2. **`plan`-джоба** — checkout `fetch-depth: 0` → prep (`./.github/actions/setup-bun-deps`) → `bunx n-rules ci plan --path run/<service> --github` (крок з `id: plan`, outputs прокинуті в `jobs.plan.outputs`).
+3. **`lint-<domain>`-джоби** (паралельно, по одній на домен сервісу) — `needs: plan`, гейт `if: needs.plan.outputs.<domain> == 'true'` (ключ = домен із `-`→`_`), крок `bunx n-rules lint <domain> --path run/<service> --no-fix` з тим самим `--path`, що в plan. Зайва домен-джоба нешкідлива (ci plan її скіпне), відсутня потрібна — дірка в гейті.
+4. **`test`-джоба** — `needs: plan`, `if: needs.plan.outputs.any == 'true'`; тести лише сервісу (`bun test run/<service>`; python-стек — `astral-sh/setup-uv` + `uv sync --locked` + `pytest run/<service>`).
+5. **Деплой** — needs-ланцюг (можна через проміжний `build`) **транзитивно досягає** `plan` і всі lint/test-джоби; кожна джоба з `needs` на умовні lint-джоби має `if` з `!cancelled()` та `!contains(needs.*.result, 'failure')` — skipped-лінт не блокує деплой, failed — блокує.
+
+Що перевіряє rego: наявність plan-джоби з `ci plan --path … --github`; збіг `on.push.paths` ↔ `--path`; outputs-мапінг plan-джоби (кожен ключ, на який посилається гейт `needs.plan.outputs.<key>`, задекларований у `jobs.plan.outputs` і вказує на `steps.<id>.outputs.<key>` реального кроку — інакше гейт тихо порожній); для кожної lint-джоби — `needs: plan`, гейт по outputs, той самий `--path`, `--no-fix`, prep-крок, `fetch-depth: 0`; для термінальних джоб — транзитивну досяжність plan і всіх перевірок та skip-толерантний `if`.
+
+Що НЕ перевіряється (справа автора): добір доменів під вміст сервісу, зміст test/deploy-кроків, секрети/environment, uv-prep. Спільні workflow-інваріанти (persist-credentials, min-версії uses, існування paths-глобів) покривають `workflow_common` і `workflows`.
+
+Repo-wide перевірки без path-підтримки (knip, jscpd, dep-policy) сюди НЕ входять — вони в окремому `lint-repo.yml` (концерн `lint_repo_yml`) і деплой не гейтять.
+
+**Автоміграція (T0-фікс, `n-rules lint` у fix-режимі):** легасі deploy-workflow (job із `n-rules lint --path <svc>` без домену, без plan-джоби) детерміновано переписується до канону — додається `plan` з outputs-мапінгом доменів + `any`, легасі lint-джоба замінюється на per-domain `lint-<domain>` (домени по файлах піддерева, ті самі glob-и, що `ci plan`), `needs` залежних джоб перешивається, джоби з прямими needs на умовні lint-джоби без власного `if` отримують Skipped-толерантний канон. Нетривіальний наявний `if` не перезаписується.
+
+**Bootstrap-режим (опційний, окремий опт-ін):** `migrateWorkflowFile(absPath, cwd, { bootstrap: true })` — для deploy-workflow **без жодної lint-джоби** (rego вважає його valid as-is — публікація без гейта може бути свідомим рішенням) створює lint-`<domain>` джоби з нуля (`relevantDomains` по всьому піддереву сервісу) і підключає вхідну/термінальну джобу без власного `needs` до `plan` + усіх нових lint-джоб зі Skipped-толерантним `if`. Це не частина звичайного `n-rules lint --fix` (`patterns[0].apply` викликає `migrateWorkflowFile` без bootstrap — інакше кожен publish-workflow без лінту тихо отримав би гейт при звичайному lint) — bootstrap механічно виконує рішення, уже ухвалене людиною, яка явно його викликала.
+
+Канон-snippet (документаційний приклад): [deploy-service.yml.snippet.yml](./template/deploy-service.yml.snippet.yml)
+
+## `.vscode/extensions.json` — розширення для GitHub Actions
+
+Rego-пакет: `ga.vscode_extensions`
+
+**Цільовий файл:** `.vscode/extensions.json`
+
+Кожне розширення з template має бути присутнє у `recommendations`. Додаткові розширення від інших правил — допустимі (subset-перевірка).
+
+Канон: [extensions.json.snippet.json](./template/extensions.json.snippet.json)
+
+## `.vscode/settings.json` — налаштування форматування GitHub Actions workflow
+
+Rego-пакет: `ga.vscode_settings`
+
+**Цільовий файл:** `.vscode/settings.json`
+
+Перевіряє 2-рівневу структуру: для кожного `<block-key>` з template кожен `<leaf-key>` у відповідному блоці input має точно відповідати очікуваному значенню. Ключі можуть містити дужки та крапки (VS Code-конвенція, наприклад `[github-actions-workflow]`).
+
+Канон: [settings.json.snippet.json](./template/settings.json.snippet.json)
+
+## Універсальні Rego-перевірки для всіх workflow-файлів
+
+Rego-пакет: `ga.workflow_common`
+
+**Цільові файли:** `.github/workflows/*.yml` (кожен файл окремо)
+
+### Що перевіряється
+
+- **concurrency** — обов'язкова наявність блоку; два допустимі режими:
+  - канонічний CI: `group` = `${{ github.ref }}-${{ github.workflow }}` + `cancel-in-progress: true`
+  - release-серіалізація: статичний `group` (без `${{ }}`-виразів, глобальний lock) + `cancel-in-progress: false` — для workflow, що піднімають версію/тег/CHANGELOG і не можуть бути скасовані на півдорозі; відсутній `cancel-in-progress` = `false` (семантика GitHub)
+  - змішані комбінації (статичний `group` + `true`, per-ref `group` + `false`) — заборонені
+- **Заборонені кроки** — `oven-sh/setup-bun`, `actions/cache`, `bun install` у будь-якому `uses:`/`run:` (мають бути інкапсульовані у composite `setup-bun-deps`)
+- **Порядок кроків** — якщо є `setup-bun-deps`, перед ним обов'язковий `actions/checkout@`
+- **Shell-продовження** — `\` перед переносом рядка у `run:` заборонено; треба `run: >-`
+- **Заборонені команди** — `depcheck` у `run:` (мігровано на `knip`)
+- **Мінімальні версії** — `uses:` з marketplace-actions перевіряються за канонічним JSON; SHA-пін (`owner/action@<40-hex SHA>`) задовольняє вимогу мінімальної версії — НЕ замінюй наявний SHA-пін тегом
+
+Канон мінімальних версій: [uses-min-versions.snippet.json](./template/uses-min-versions.snippet.json)
+
+Детальна документація поведінки — у [ga-workflow_common](../../js/workflow_common.mdc).
+
+## Структура workflow-файлів та обов'язкові workflows
+
+У `.github/workflows/` лише **`.yml`** (не `.yaml`). Обов'язкові файли:
+
+- **`clean-ga-workflows.yml`**
+- **`clean-merged-branch.yml`**
+- **`lint-ga.yml`**
+- **`git-ai.yml`**
+
+Якщо є **`apply-k8s.yml`** — тригер `on.push.paths` має містити `**/k8s/**/*.yaml`.
+Якщо є **`apply-nats-consumer.yml`** — тригер `on.push.paths` має містити `**/consumer.yaml`.
+
+## Перевірка glob-патернів `on.push.paths`
+
+Кожен позитивний glob у `on.push.paths` / `on.pull_request.paths` (крім `!`-негацій та `*`-extension-фільтрів) має матчитися хоча б на один tracked файл у репозиторії (`git ls-files`). Шаблони на кшталт `*.vue` чи `{*.ts,*.js}` пропускаються — вони можуть бути заготовками для майбутніх файлів. Конкретні директорії (`some-dir/**`) — перевіряються.
+
+## Заборона MegaLinter
+
+**MegaLinter** не використовувати. Треба видалити:
+
+- workflow-файли з `oxsecurity/megalinter-action` або `megalinter/megalinter`
+- конфіги: `.mega-linter.yml`, `.megalinter.yaml`, `.mega-linter.yaml`
+- будь-які залежності та згадки в CI / pre-commit / документації
+
+## Shellcheck у PATH
+
+`actionlint` (через `bunx github-actionlint`) запускає shell-перевірки в кроках `run:` лише коли `shellcheck` доступний у PATH — інакше мовчки пропускає SC-правила. Локальний `bun lint-ga` лишається зеленим, а CI на `ubuntu-latest` (де shellcheck передвстановлений) падає.
+
+Встанови `shellcheck`:
+
+- macOS: `brew install shellcheck`
+- Debian/Ubuntu: `sudo apt-get install -y shellcheck`
+- Arch: `sudo pacman -S shellcheck`
+
+## `.github/zizmor.yml` — конфігурація zizmor для unpinned-uses
+
+Rego-пакет: `ga.zizmor_yml`
+
+**Цільовий файл:** `.github/zizmor.yml`
+
+Перевіряє `rules.unpinned-uses.config.policies["*"]` — значення має точно відповідати template (`ref-pin`). Всі вкладені об'єкти читаються через `object.get` із дефолтами, тож відсутні ключі коректно детектуються як порушення.
+
+Канон: [zizmor.yml.snippet.yml](./template/zizmor.yml.snippet.yml)

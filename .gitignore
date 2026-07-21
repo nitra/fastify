@@ -12,3 +12,13 @@ node_modules/
 .pnp.*
 
 .env.secret
+# @7n/rules (adr) — локальні артефакти Stop-hook, не коміти
+dist/
+*.secret
+.claude/hooks/*.log
+.claude/hooks/.normalize-state
+.claude/hooks/.normalize.lock
+.claude/scheduled_tasks.lock
+
+# @7n/rules — локальні git-worktree, не коміти
+.worktrees/
