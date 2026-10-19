@@ -1,0 +1,21 @@
+npm/package.json
+  s_86ba98daefda31::t_ac8d3d53454109 3
+npm/src/index.js
+  s_86ba98daefda31::t_a87b6d08dcd05b 27,39-42,44-45,47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a83fcd49be7ff3f7a1f6b0ee80ee262d0137e9d0",
+  "prompts": {},
+  "sessions": {
+    "s_86ba98daefda31": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "22b984c7-f2eb-4dd0-ac34-5200a9a37770",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Yurii <brechkoio@gmail.com>"
+    }
+  }
+}
