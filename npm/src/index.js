@@ -24,7 +24,7 @@ app.register(fastifySensible) // для reply.badRequest(`Not found url: ${req.u
 
 // Опрацювання запитів OPTIONS
 app.options('*', (_req, reply) => {
-  // + setHeaders в preHandler
+  // + setHeaders в onRequest
   reply.header('Access-Control-Max-Age', 86400)
   reply.header('Cache-Control', 'public, max-age=86400')
   reply.header('Vary', 'origin')
@@ -36,10 +36,15 @@ app.get('/healthz', { logLevel: 'silent' }, () => {
   return { status: 'ok' }
 })
 
-app.addHook('preHandler', (req, reply, done) => {
-  // Ручний cors, бо WildcardOrigin Not Allowed
+// Ручний cors, бо WildcardOrigin Not Allowed.
+// onRequest — найперша стадія: заголовки потрапляють і у відмови з ранніх стадій
+// (401 з auth-хука, 429 rate-limit, 400 валідації, 413), інакше браузер показує "Failed to fetch"
+app.addHook('onRequest', (req, reply, done) => {
   setHeaders(req, reply)
+  done()
+})
 
+app.addHook('preHandler', (req, _reply, done) => {
   // Додаємо до логеру traceId
   req.log = getLogger(req)
 
